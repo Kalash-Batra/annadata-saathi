@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Annadata Saathi</title>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🌾</span>
+                <span class="logo-text">Annadata Saathi</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active" onclick="showSection('home')">Home</a></li>
+                <li><a href="#advisory" class="nav-link" onclick="showSection('advisory')">Advisory</a></li>
+                <li><a href="#image" class="nav-link" onclick="showSection('image')">Image Analysis</a></li>
+                <li><a href="#planning" class="nav-link" onclick="showSection('planning')">Planning</a></li>
+                <li><a href="#schemes" class="nav-link" onclick="showSection('schemes')">Schemes</a></li>
+                <li><a href="#about" class="nav-link" onclick="showSection('about')">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Settings/Language Panel -->
+        <div class="settings-panel">
+            <div class="settings-group">
+                <label for="languageSelect">Language / भाषा:</label>
+                <select id="languageSelect" class="input-select" onchange="updateLanguage()">
+                    <option value="hindi">हिंदी (Hindi)</option>
+                    <option value="marathi">मराठी (Marathi)</option>
+                    <option value="tamil">தமிழ் (Tamil)</option>
+                    <option value="telugu">తెలుగు (Telugu)</option>
+                    <option value="punjabi">ਪੰਜਾਬੀ (Punjabi)</option>
+                    <option value="bengali">বাংলা (Bengali)</option>
+                    <option value="english">English</option>
+                </select>
+            </div>
+
+            <div class="settings-group">
+                <label for="stateSelect">State / राज्य:</label>
+                <select id="stateSelect" class="input-select" onchange="updateState()">
+                    <option value="">Select Your State</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- SECTION 0: HOME -->
+        <section id="home" class="section active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">🌾 Annadata Saathi</h1>
+                    <p class="hero-subtitle">आपका AI कृषि सहायक | Your AI Agricultural Assistant</p>
+                    <p class="hero-description">
+                        एक स्मार्ट कृषि सहायक जो आपकी सभी खेती की समस्याओं का समाधान करता है।
+                        A smart agricultural assistant that solves all your farming problems.
+                    </p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card" onclick="showSection('advisory')">
+                        <span class="feature-icon">💬</span>
+                        <h3>Text Advisory</h3>
+                        <p>अपनी समस्या बताएं, समाधान पाएं</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showSection('image')">
+                        <span class="feature-icon">📸</span>
+                        <h3>Image Analysis</h3>
+                        <p>फसल की फोटो दिखाएं, सुझाव पाएं</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showSection('planning')">
+                        <span class="feature-icon">📋</span>
+                        <h3>Planning Guide</h3>
+                        <p>मौसम और बाजार के अनुसार योजना</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showSection('schemes')">
+                        <span class="feature-icon">🏛️</span>
+                        <h3>Govt Schemes</h3>
+                        <p>सरकारी योजनाएं खोजें और जानें</p>
+                    </div>
+                </div>
+
+                <div class="disclaimer-box">
+                    <strong>⚠️ Important Notice / महत्वपूर्ण सूचना:</strong>
+                    <p>यह AI-आधारित सलाह है। निर्णय लेने से पहले स्थानीय कृषि अधिकारियों से सलाह लें।<br>
+                        This is AI-based advice. Please consult local agricultural officers before making decisions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: TEXT CROP ADVISORY -->
+        <section id="advisory" class="section">
+            <div class="section-header">
+                <h2>💬 Crop Advisory / फसल सलाह</h2>
+                <p>अपनी फसल की समस्या बताएं और AI से समाधान पाएं</p>
+            </div>
+
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="cropSelect1">Select Crop / फसल चुनें:</label>
+                    <select id="cropSelect1" class="input-select">
+                        <option value="">Choose a crop</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="problemText">Describe Your Problem / समस्या का विवरण (हिंदी या अंग्रेजी में):</label>
+                    <textarea id="problemText" class="input-textarea"
+                        placeholder="Example: Yellow spots are appearing on my wheat crop…" rows="6"></textarea>
+                </div>
+
+                <button class="btn-primary" onclick="getAdvisory()">
+                    <span class="loading-spinner" id="spinner1" style="display:none;"></span>
+                    Get Advisory / सलाह पाएं
+                </button>
+
+                <div id="advisoryResult" class="result-container" style="display:none;">
+                    <h3>Advisory / सलाह:</h3>
+                    <div id="advisoryContent" class="result-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: IMAGE ANALYSIS -->
+        <section id="image" class="section">
+            <div class="section-header">
+                <h2>📸 Crop Image Analysis / फसल की फोटो विश्लेषण</h2>
+                <p>अपनी फसल या पत्ती की फोटो अपलोड करें और समस्या जानें</p>
+            </div>
+
+            <div class="form-container">
+                <div class="image-upload-area" id="uploadArea" onclick="document.getElementById('imageInput').click()">
+                    <span class="upload-icon">📤</span>
+                    <p>Click or drag image here / यहाँ क्लिक करें या फोटो ड्रैग करें</p>
+                    <input type="file" id="imageInput" class="file-input" accept="image/*"
+                        onchange="handleImageSelect()">
+                </div>
+
+                <div id="imagePreview" class="image-preview" style="display:none;">
+                    <img id="previewImg" src="" alt="Preview">
+                    <button class="btn-danger" onclick="clearImage()">Clear Image / फोटो हटाएं</button>
+                </div>
+
+                <button class="btn-primary" onclick="analyzeImage()" id="analyzeBtn" style="display:none;">
+                    <span class="loading-spinner" id="spinner2" style="display:none;"></span>
+                    Analyze Image / फोटो का विश्लेषण करें
+                </button>
+
+                <div id="imageResult" class="result-container" style="display:none;">
+                    <h3>Analysis / विश्लेषण:</h3>
+                    <div id="imageContent" class="result-content"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 3: PLANNING ADVISORY -->
+
+        <section id="planning" class="section">
+            <div class="section-header">
+                <h2>📋 Planning Advisory / योजना सलाह</h2>
+                <p>मौसम और बाजार के आधार पर योजना बनाएं</p>
+            </div>
+
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="cropSelect2">Select Crop / फसल चुनें:</label>
+                    <select id="cropSelect2" class="input-select">
+                        <option value="">Choose a crop</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Planning Type / योजना का प्रकार:</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="planning_type" value="weather" checked>
+                            Weather Planning / मौसम के आधार पर
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="planning_type" value="market">
+                            Market Planning / बाजार के आधार पर
+                        </label>
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="getPlanningAdvisory()">
+                    <span class="loading-spinner" id="spinner3" style="display:none;"></span>
+                    Get Planning Advice / योजना की सलाह पाएं
+                </button>
+
+                <div id="planningResult" class="result-container" style="display:none;">
+                    <h3>Planning Advice / योजना की सलाह:</h3>
+                    <div id="planningContent" class="result-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: GOVERNMENT SCHEMES -->
+        <section id="schemes" class="section">
+            <div class="section-header">
+                <h2>🏛️ Government Schemes / सरकारी योजनाएं</h2>
+                <p>अपने राज्य और फसल के लिए योजनाएं खोजें</p>
+            </div>
+
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="stateSelect2">Select State / राज्य चुनें:</label>
+                    <select id="stateSelect2" class="input-select">
+                        <option value="">Choose your state</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cropSelect3">Select Crop / फसल चुनें:</label>
+                    <select id="cropSelect3" class="input-select">
+                        <option value="">Choose a crop</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" onclick="getSchemes()">
+                    <span class="loading-spinner" id="spinner4" style="display:none;"></span>
+                    Find Schemes / योजनाएं खोजें
+                </button>
+
+                <div id="schemesResult" class="result-container" style="display:none;">
+                    <h3>Available Schemes / उपलब्ध योजनाएं:</h3>
+                    <div id="schemesContent" class="result-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: ABOUT -->
+        <section id="about" class="section">
+            <div class="section-header">
+                <h2>About Annadata Saathi</h2>
+                <p>जानें हमारे बारे में</p>
+            </div>
+
+            <div class="about-container">
+                <div class="about-card">
+                    <h3>🎯 Our Mission</h3>
+                    <p>To provide every Indian farmer with affordable, reliable, and easy-to-use agricultural guidance through modern AI technology || हर भारतीय किसान को आधुनिक AI प्रौद्योगिकी के माध्यम से सस्ती, विश्वसनीय और सरल कृषि सलाह प्रदान करना।</p>
+                </div>
+
+                <div class="about-card">
+                    <h3>🌍 Multilingual Support</h3>
+                    <p>We provide guidance in 7 Indian languages: Hindi, Marathi, Tamil, Telugu, Punjabi, Bengali, and English.|| हम 7 भारतीय भाषाओं में सलाह देते हैं: हिंदी, मराठी, तमिल, तेलुगु, पंजाबी, बंगाली और अंग्रेजी।</p>
+                </div>
+
+                <div class="about-card">
+                    <h3>🤖 AI-Powered</h3>
+                    <p>We use advanced AI models to provide personalized and accurate answers to every question.|| Advanced AI मॉडल का उपयोग करके हर सवाल का व्यक्तिगत और सटीक जवाब देते हैं।</p>
+                </div>
+
+                <div class="about-card">
+                    <h3>🔒 Privacy First</h3>
+                    <p>No login, no data storage, and no tracking — your privacy is our top priority.
+Annadata Saathi does not ask for personal details, does not store your questions, images, or voice recordings, and does not track user activity. 
+
+कोई लॉगिन नहीं, कोई डेटा स्टोरेज नहीं और कोई ट्रैकिंग नहीं — आपकी गोपनीयता हमारी सर्वोच्च प्राथमिकता है।
+Annadata Saathi आपसे कोई व्यक्तिगत जानकारी नहीं मांगता, न ही आपके सवाल, फोटो या वॉइस रिकॉर्डिंग को सेव करता है और न ही आपकी गतिविधियों को ट्रैक करता है। </p>
+                </div>
+
+                <div class="disclaimer-box">
+                    <strong>Responsible AI Disclaimer:</strong>
+                    <p>This application provides AI-based agricultural advisory. यह एप्लिकेशन AI-आधारित कृषि सलाह प्रदान करता है। All advice is for informational purposes only. सभी सलाह केवल सूचना के उद्देश्य से है। Always consult with local agricultural officers, experts, and government resources before making important farming decisions. महत्वपूर्ण कृषि निर्णय लेने से पहले हमेशा स्थानीय कृषि अधिकारियों और विशेषज्ञों से सलाह लें।</p>
+                </div>
+            </div>
+        </section>
+
+    <!-- Loading Indicator -->
+    <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading... कृपया प्रतीक्षा करें</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<footer>
+     <div class="footer-bottom">
+        <p>
+        <b>            &copy; 2026 Annadata Saathi | Made with ❤️ for Indian Farmers  </b>
+        </p>
+    </div>
+    <div class="footer-section">
+    <h4 style="color: aliceblue;">Support</h4>
+    <a href="https://wa.me/919999999999" target="_blank" class="footer-btn whatsapp">
+         WhatsApp Help
+    </a>
+    <a href="tel:+919999999999" class="footer-btn call">
+         Call Support
+    </a>
+</div>
+
+</footer>
+<button id="backToTop" onclick="scrollToTop()">⬆️</button>
+</body>
+
+
+</html>
